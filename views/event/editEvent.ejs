@@ -1,0 +1,168 @@
+<!-- Form-->
+<form action="/event/editEvent/<%= event.id %>" method="post">
+    <div class="columns" style="margin: 1.5%;">
+        <div class="column is-half">
+            <div class="field">
+                <label class="label">Event Name</label>
+                <div class="control">
+                    <input class="input" type="text" placeholder="Text input" name="EventName"
+                        value="<%= event.EventName %>">
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Short Description</label>
+                <div class="control">
+                    <input class="input" type="text" placeholder="Text input" name="ShortDescription"
+                        value="<%= event.ShortDescription %>">
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Long Description</label>
+                <div class="control">
+                    <textarea class="textarea" placeholder="Textarea"
+                        name="LongDescription"><%= event.LongDescription %></textarea>
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Image URL</label>
+                <div class="control">
+                    <input class="input" placeholder="Text input" name="ImageURL" value="<%= event.ImageURL %>">
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Organizer</label>
+                <div class="control">
+                    <div class="select">
+                        <select name="Organizer" option value="<%= event.Organizer %>">
+                            <option>
+                                <%= event.Organizer %>
+                            </option>
+                            <option>Music Society</option>
+                            <option>Department of Computer Science</option>
+                            <option>Student Union</option>
+                            <option>Registry</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="column is-half">
+            <div class="field">
+                <label class="label">Event Date</label>
+                <div class="control">
+                    <input class="input" type="date" placeholder="Text input" name="EventDate"
+                        value="<%= event.EventDate %>">
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Start Time</label>
+                <div class="control">
+                    <input class="input" type="time" placeholder="Text input" name="StartTime"
+                        value="<%= event.StartTime %>">
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">End Time</label>
+                <div class="control">
+                    <input class="input" type="time" placeholder="Text input" name="EndTime"
+                        value="<%= event.EndTime %>">
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Venue</label>
+                <div class="control">
+                    <div class="select">
+                        <select name="Venue" value="<%= event.Venue %>">
+
+                            <option>
+                                <%= event.Venue %>
+                            </option>
+                            <option>AAB 306</option>
+                            <option>Courtyard</option>
+                            <option>Music Room</option>
+                            <option>AC Hall</option>
+                            <option>To Be Confirmed</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Quota</label>
+                <div class="control">
+                    <input class="input" type="text" placeholder="Text input" name="Quota" value="<%= event.Quota %>">
+                </div>
+            </div>
+
+            <label class="checkbox">
+                <input type="checkbox" name="HighlightEvent" value="<%= event.HighlightEvent %>">
+                Highlight Event
+            </label>
+
+            <div class="field is-grouped" style="margin-top: 2%;">
+                <div class="control">
+                        <button type="submit" class="button is-link" onclick="editEvent('<%= event.id %>')" style="background-color:#1764bd;">
+                            Save
+                        </button>
+                    </a>
+                </div>
+                <div>
+                    <button type="button" class="button is-danger" onclick="deleteEvent('<%= event.id %>')">
+                        Delete
+                    </button>
+                </div>
+
+            </div>
+        </div>
+</form>
+
+<script>
+    async function deleteEvent(id) {
+        var r = confirm("Confirm Delete?");
+
+        if (r) {
+            var response = await fetch("/event/delete/" + id, {
+                method: "DELETE"
+            });
+
+            if (response.ok) {
+                alert("Event deleted.");
+                location.assign("/admin");
+            } else {
+                alert(response.status + ": " + response.statusText);
+            }
+
+        } else {
+            alert("cancelled");
+        }
+    };
+
+    async function editEvent(id) {
+        var r = confirm("Confirm Update?");
+
+        if (r) {
+            var response = await fetch("/event/editEvent/" + id, {
+                method: "POST"
+            });
+
+            if (response.ok) {
+                alert("Event updated.");
+                location.assign("/admin");
+            } else {
+                alert(response.status + ": " + response.statusText);
+            }
+
+        } else {
+            alert("cancelled");
+        }
+    };
+
+</script>

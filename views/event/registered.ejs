@@ -1,0 +1,20 @@
+
+<div style="margin:2%">
+    <table class="table is-bordered is-striped is-hoverable is-fullwidth">
+        <thead>
+            <th style="border-right-color:transparent;">ID</th>
+            <th style="border-right-color:transparent;">Username</th>
+        </thead>
+        <% events.register.forEach( function(user) { %>
+            <tr>
+                <td style="border-right-color:transparent;">
+                    <%= user.id %>
+                </td>
+                <td style="border-right-color:transparent;">
+                        <%= user.username %>
+                </td>
+            </tr>
+            <% }); %>
+
+    </table>
+</div>

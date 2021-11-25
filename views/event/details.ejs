@@ -1,0 +1,150 @@
+<!-- display dynamic object so use ejs placeholder-->
+
+
+<div style="margin-left: 10%; margin-right: 10%;margin-bottom: 1%;margin-top: 2%;">
+
+    <table class="table is-bordered is-striped is-fullwidth">
+        <thead>
+            <tr>
+                <th style=" text-align: center;">Event <%= event.id %>: <%= event.EventName %>
+                </th>
+            </tr>
+        </thead>
+
+
+        <tbody>
+            <tr>
+                <td>
+                    <figure class="image is-half"> <img src="<%= event.ImageURL %>" alt="Image"> </figure>
+                </td>
+            </tr>
+            <tr>
+                <td> Date: <%= event.EventDate %>
+                </td>
+            </tr>
+            <tr>
+                <td> Time: <%= event.StartTime %> to <%= event.EndTime %>
+                </td>
+            <tr>
+                <td> Venue: <%= event.Venue %>
+                </td>
+            </tr>
+            <tr>
+                <td> Organizer: <%= event.Organizer %>
+                </td>
+            </tr>
+            <tr>
+                <td> Quota:<%= event.Quota %>
+                </td>
+            </tr>
+            <tr>
+                <td> Description:<%= event.LongDescription %>
+                </td>
+            </tr>
+            </tr>
+        </tbody>
+
+    </table>
+</div>
+
+
+<%if (req.session.role=="admin" ){ %>
+    <div class="container" style="text-align: center;">
+        <a href="/event/editEvent/<%= event.id %>">
+            <button class="button is-link" type="submit" style="background-color:#1764bd;">
+                Update
+            </button>
+        </a>
+    </div>
+
+    <%} else if (req.session.role=="student" ){ %>
+        <!-- <div class="container" ">
+        <a href="/event/registered">
+                <button class="button is-link" type="submit" style="background-color:#1764bd;">
+                    Register
+                </button>
+            </a>
+        </div> -->
+        <div class="container" style="text-align: center; padding-bottom: 200px;">
+            <span id="registerButton"></span>
+            <!-- <button class="button is-link" type="submit" style="background-color:#1764bd;">
+                        Register
+                    </button> -->
+
+        </div>
+        <%} %>
+
+            <div>
+                <% req.params.id %>
+            </div>
+
+            <script>
+                check()
+                async function check() {
+                    var response = await fetch("/registered", {
+                        method: "GET"
+                    });
+                    var showCancelButton = false;
+                    var registeredEvents = await response.json();
+                    // console.log(registeredEvents.participant);
+                    registeredEvents.participant.forEach(function (event) {
+                        if (event.id == '<%= event.id %>') {
+                            showCancelButton = true;
+                        }
+                    })
+                    // console.log(showCancelButton);
+                    if (!showCancelButton) {
+                        var p = document.getElementById("registerButton");
+                        var newElement = document.createElement('span');
+                        newElement.innerHTML = '<button type="button" class="button is-link" style="background-color:#1764bd;" onclick="registerEvent(\'<%= event.id %>\')">Regsiter</button>';
+                        p.appendChild(newElement);
+                    } else {
+                        var p = document.getElementById("registerButton");
+                        var newElement = document.createElement('span');
+                        newElement.innerHTML = '<button type="button" class="button is-danger" onclick="cancelEvent(\'<%= event.id %>\')">Cancel</button>';
+                        p.appendChild(newElement);
+                    }
+                }
+            </script>
+            <script>
+                async function registerEvent(fk) {
+                    var r = confirm("Confirm Register?");
+                    if (r) {
+                        var res = await fetch("/event/details/" + fk, {
+                            method: "GET"
+                        });
+                        var res2 = await fetch("/user/participant", {
+                            method: "GET"
+                        });
+                        var event = await res.json();
+                        var user = await res2.json();
+                        if (event.Quota > 0) {
+                            var response = await fetch("/user/participant/add/" + fk, {
+                                method: "POST"
+                            });
+                            if (response.ok) {
+                                alert("Registered.")
+                                location.assign("/registered");
+                            } else {
+                                alert(response.status + ": " + response.statusText);
+                            }
+                        } else {
+                            alert("No quota remain.")
+                        }
+                    } 
+                };
+                async function cancelEvent(fk) {
+                    var r = confirm("Confirm Cancel?");
+                    if (r) {
+                        var response = await fetch("/user/participant/remove/" + fk, {
+                            method: "POST"
+                        });
+                        if (response.ok) {
+                            alert("Cancelled.")
+                            location.assign("/registered");
+                        } else {
+                            alert(response.status + ": " + response.statusText);
+                        }
+                    }
+                };
+            </script>

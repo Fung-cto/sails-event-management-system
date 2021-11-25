@@ -1,0 +1,117 @@
+
+
+
+<!-- Form-->
+<form action="/event/create" method="post">
+<div class="columns" style="margin: 1.5%;" > 
+    <div class="column is-half">
+        <div class="field">
+            <label class="label">Event Name</label>
+            <div class="control">
+                <input class="input" type="text" placeholder="Text input" name="EventName" required>
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Short Description</label>
+            <div class="control">
+                <input class="input" type="text" placeholder="Text input" name="ShortDescription"> 
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Long Description</label>
+            <div class="control">
+                <textarea class="textarea is-multiline" placeholder="Textarea" name="LongDescription"></textarea>
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Image URL</label>
+            <div class="control">
+                <input class="input" placeholder="Text input" name="ImageURL">
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Organizer</label>
+            <div class="control">
+                <div class="select">
+                    <select name="Organizer">
+                        <option>Select dropdown</option>
+                        <option>Music Society</option>
+                        <option>Department of Computer Science</option>
+                        <option>Student Union</option>
+                        <option>Registry</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="column is-half">
+        <div class="field">
+            <label class="label">Event Date</label>
+            <div class="control">
+                <input class="input" type="date" placeholder="Text input" name="EventDate">
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Start Time</label>
+            <div class="control">
+                <input class="input" type="time" placeholder="Text input" name="StartTime">
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">End Time</label>
+            <div class="control">
+                <input class="input" type="time" placeholder="Text input" name="EndTime">
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Venue</label>
+            <div class="control">
+                <div class="select" >
+                    <select name="Venue">
+                        <option>Select dropdown</option>
+                        <option>AAB 306</option>
+                        <option>Courtyard</option>
+                        <option>Music Room</option>
+                        <option>AC Hall</option>
+                        <option>To Be Confirmed</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Quota</label>
+            <div class="control" >
+                <input class="input" type="text" placeholder="Text input" name="Quota">
+            </div>
+        </div>
+
+        <label class="checkbox">
+            <input type="checkbox" name="HighlightEvent">
+            Highlight Event
+        </label>
+
+        <div class="field is-grouped" style="margin-top: 2%;">
+            <p class="control">
+              <button class="button is-link" type="submit" style="background-color:#1764bd;">
+                Submit
+              </button>
+            </p>
+            <p class="control">
+              <button class="button is-link is-light" type="reset">
+                Cancel
+              </button>
+            </p>
+          </div>
+
+    </div>
+</div>
+</form>

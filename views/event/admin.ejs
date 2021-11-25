@@ -1,0 +1,30 @@
+<!--admin.ejs-->
+<div style="margin:2%">
+    <table class="table is-bordered is-striped is-hoverable is-fullwidth">
+        <thead>
+            <th style="border-right-color:transparent;">ID</th>
+            <th style="border-right-color:transparent;">Event</th>
+            <th>Organizer</td>
+            <th>Registered Students</td>
+        </thead>
+        <% events.forEach( function(event) { %>
+            <tr>
+                <td style="border-right-color:transparent;">
+                    <%= event.id %>
+                </td>
+                <td style="border-right-color:transparent;">
+                    <a href="/event/details/<%= event.id %>">
+                        <%= event.EventName %>
+                    </a>
+
+                </td>
+                <td>
+                    <%= event.Organizer %>
+                </td>
+                <td><a href="/event/<%= event.id %>/register">Registered Students</td>
+            </tr>
+
+            <% }); %>
+
+    </table>
+</div>

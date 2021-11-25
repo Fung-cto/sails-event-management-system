@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+
+<% if (user.id == session.userId) {%>
+
+<!-- Card-->
+<div class="column ml-2 mr-2">Registered Events</div>
+<div class="columns is-multiline ml-2 mr-2 mt-2">
+    <% user.participant.forEach( function(event) { %>
+        <div class="column is-4">
+
+            <div class="card">
+                <div class="card-image">
+                    <figure class="image is-4by3">
+                        <img src="<%= event.ImageURL %>" alt="Image">
+                    </figure>
+                </div>
+                <div class="card-content">
+                    <div class="media">
+                        <div class="media-left">
+                            <figure class="image is-48x48">
+                                <img src="http://bulma.io/images/placeholders/96x96.png" alt="Image">
+                            </figure>
+                        </div>
+                        <div class="media-content">
+                            <p class="title is-4">
+                                <a href="event/details/<%= event.id %>">
+                                <%= event.EventName %>
+                                </a>
+                            </p>
+                            <p class="subtitle is-6">
+                                <%= event.Organizer %>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="content">
+                        <div>
+                            <%= event.EventName %>
+                        </div>
+                        <div>
+                            <%= event.EventDate %>
+                        </div>
+                        <div>
+                            <%= event.StartTime %> - <%= event.EndTime %>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% }); %>
+
+
+<% } else { %>
+    <h1 class="title">Unauthorized Access!</h4>
+<% } %>

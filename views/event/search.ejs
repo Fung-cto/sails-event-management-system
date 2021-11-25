@@ -1,0 +1,151 @@
+<!-- Card-->
+
+<body
+    onload="fetchPage('EventName=<%= req.query.EventName %>&Organizer=<%= req.query.Organizer %>&Venue=<%= req.query.Venue %>&StartDate=<%= req.query.StartDate %>&EndDate=<%= req.query.EndDate %>', 2, 1)">
+
+    <div class="columns" style="margin: 2%;" id="p2"></div>
+
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js">
+</script>
+<script src="fancyTable.js">
+</script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $(".sampleTable").fancyTable({
+            /* Column number for initial sorting*/
+            sortColumn: 0,
+            /* Setting pagination or enabling */
+            pagination: true,
+            /* Rows per page kept for display */
+            perPage: 3,
+            globalSearch: true
+        });
+
+    });
+</script> -->
+
+
+
+
+    <div class="columns" style="margin: 2%;">
+        <div class="column is-two-thirds">
+            <nav class="pagination" role="navigation" aria-label="pagination">
+                <a class="pagination-previous" id="previousButton">Previous</a>
+                <a class="pagination-next" id="nextButton">Next page</a>
+                <ul class="pagination-list">
+                    <li>
+                        <a class="pagination-link" id="firstLink">1</a>
+                    </li>
+                    <li>
+                        <span class="pagination-ellipsis">&hellip;</span>
+                    </li>
+                    <li>
+                        <a class="pagination-link" id="previousLink"></a>
+                    </li>
+                    <li>
+                        <a class="pagination-link is-current" id="currentLink"></a>
+                    </li>
+                    <li>
+                        <a class="pagination-link" id="nextLink"></a>
+                    </li>
+                    <li>
+                        <span class="pagination-ellipsis">&hellip;</span>
+                    </li>
+                    <li>
+                        <a class="pagination-link" id="lastLink"></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</body>
+
+<script>
+    function buildLinks(perPage, current) {
+
+        var previousButton = document.getElementById("previousButton");
+        var nextButton = document.getElementById("nextButton");
+        var currentLink = document.getElementById("currentLink");
+        var previousLink = document.getElementById("previousLink");
+        var nextLink = document.getElementById("nextLink");
+        var firstLink = document.getElementById("firstLink");
+        var lastLink = document.getElementById("lastLink");
+
+        var total = parseInt("<%= total %>");
+        var submitButton = document.getElementById("submitButton");
+        // var perPage = Math.max(parseInt("<%= req.query.perPage %>"), 2) || 2;
+        // var current = Math.max(parseInt("<%= req.query.current %>"), 1) || 1;
+        var where = "EventName=<%= req.query.EventName %>&Organizer=<%= req.query.Organizer %>&Venue=<%= req.query.Venue %>&StartDate=<%= req.query.StartDate %>&EndDate=<%= req.query.EndDate %>";
+
+        // var baseUrl = "/event/search?perPage=" + perPage + "&current=";
+
+        // firstLink.href = baseUrl + 1;
+        // previousButton.href = baseUrl + (current - 1);
+        // previousLink.href = baseUrl + (current - 1);
+        // currentLink.href = baseUrl + current;
+        // nextLink.href = baseUrl + (current + 1);
+        // nextButton.href = baseUrl + (current + 1);
+        // lastLink.href = baseUrl + Math.ceil(total / perPage);
+
+        firstLink.onclick = function () { fetchPage(where, perPage, 1) };
+        previousButton.onclick = function () { fetchPage(where, perPage, current - 1) };
+        previousLink.onclick = function () { fetchPage(where, perPage, current - 1) };
+        currentLink.onclick = function () { fetchPage(where, perPage, current) };
+        nextLink.onclick = function () { fetchPage(where, perPage, current + 1) };
+        nextButton.onclick = function () { fetchPage(where, perPage, current + 1) };
+        lastLink.onclick = function () { fetchPage(where, perPage, Math.ceil(total / perPage)) };
+
+        submitButton.onclick = function () { fetchPage(where, perPage, current) };
+
+        // var currentPageNumber = Math.floor(current / perPage) + 1;
+
+        previousLink.innerHTML = current - 1;
+        currentLink.innerHTML = current;
+        nextLink.innerHTML = current + 1;
+        lastLink.innerHTML = Math.ceil(total / perPage);
+
+        if (current <= 1) {
+            previousButton.setAttribute("disabled", true);
+            previousButton.onclick = null;
+            previousLink.style.display = "none";
+        } else {
+            previousButton.removeAttribute("disabled");
+            previousLink.style.display = "block";
+        }
+
+        if (current >= Math.ceil(total / perPage)) {
+            nextButton.setAttribute("disabled", true);
+            nextButton.onclick = null;
+            nextLink.style.display = "none";
+        } else {
+            nextButton.removeAttribute("disabled");
+            nextLink.style.display = "block";
+        }
+    }
+
+    // buildLinks();
+
+</script>
+
+<script>
+    async function fetchPage(where, perPage , current) {
+        console.log(where, perPage, current);
+        var response = await fetch("/event/search?" + where + "&perPage=" + perPage + "&current=" + current);
+        if (response.ok) {
+            var events = await response.json();
+            var dynamicCode = '';
+            events.forEach(function (event) {
+                dynamicCode +=
+                    '<div class="column ml-2"><div class="card"><div class="card-image"><figure class="image is-4by3"><img src="' + event.ImageURL + '" alt="Image"></figure></div><div class="card-content"><div class="media"><div class="media-left"><figure class="image is-48x48"><img src="http://bulma.io/images/placeholders/96x96.png" alt="Image"></figure></div><div class="media-content"><p class="title is-4"><a href="/event/details/'+event.id+'">' +event.EventName +'</a></p><p class="subtitle is-6">' + event.Organizer + '</p></div></div><div class="content"><div>' + event.EventName + '</div><div>' + event.EventDate+'</div><div>' + event.StartTime + ' - ' + event.EndTime +'</div></div></div></div></div>';
+            });
+            document.querySelector("#p2").innerHTML = dynamicCode +
+                '<div class="column"> <form> <div class="field"> <label class="label">Event Name</label> <div class="control"> <input class="input" type="text" placeholder="Text input" name="EventName"> </div> </div> <div class="field"> <label class="label">Please pick an organizer</label> <div class="control"> <div class="select"> <select name="Organizer"> <option value="">Select dropdown</option> <option value="Music Society">Music Society</option> <option value="Department of Computer Science">Department of Computer Science</option> <option value="Student Union">Student Union</option> </select> </div> </div> </div> <div class="field"> <label class="label">Start Date</label> <div class="control"> <input class="input" type="date" name="StartDate"> </div> </div> <div class="field"> <label class="label">End Date</label> <div class="control"> <input class="input" type="date" name="EndDate"> </div> </div> <div class="field"> <label class="label">Please pick a venue</label> <div class="control"> <div class="select"> <select name="Venue"> <option value="">Select dropdown</option> <option value="AAB306">AAB306</option> <option value="Courtyard">Courtyard</option> <option value="AC Hall">AC Hall</option> </select> </div> </div> </div> <div class="field is-grouped" style="margin-top: 2%;"> <p class="control"> <button class="button is-link" id="submitButton" style="background-color:#1764bd;"> Submit </button> </p> </div></form></div>';
+            buildLinks(perPage, current);
+        } else {
+            alert(response.status + ": " + response.statusText);
+        }
+    };
+</script>
