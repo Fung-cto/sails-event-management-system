@@ -1,77 +1,76 @@
 <div id="searchPage" class="columns" style="margin: 2%;">
-    <div class="column">
-        <div class="column ml-2">
-            <div class="card" v-for="event in events">
-                <div class="card-image">
-                    <figure class="image is-4by3"><img v-bind:src="event.ImageURL" alt="Image"></figure>
-                </div>
-                <div class="card-content">
-                    <div class="media">
-                        <div class="media-left">
-                            <figure class="image is-48x48"><img src="http://bulma.io/images/placeholders/96x96.png"
-                                    alt="Image"></figure>
-                        </div>
-                        <div class="media-content">
-                            <p class="title is-4"><a v-bind:href="'/event/details/'+event.id">{{event.EventName}}</a>
-                            </p>
-                            <p class="subtitle is-6">{{event.Organizer}}</p>
-                        </div>
+    <div class="column ml-2" v-for="event in events">
+        <div class="card" >
+            <div class="card-image">
+                <figure class="image is-4by3"><img v-bind:src="event.ImageURL" alt="Image"></figure>
+            </div>
+            <div class="card-content">
+                <div class="media">
+                    <div class="media-left">
+                        <figure class="image is-48x48"><img src="http://bulma.io/images/placeholders/96x96.png"
+                                alt="Image"></figure>
                     </div>
-                    <div class="content">
-                        <div>{{event.EventName}}</div>
-                        <div>{{event.EventDate}}</div>
-                        <div>{{event.StartTime}} - {{event.EndTime}}</div>
+                    <div class="media-content">
+                        <p class="title is-4"><a v-bind:href="'/event/details/'+event.id">{{event.EventName}}</a>
+                        </p>
+                        <p class="subtitle is-6">{{event.Organizer}}</p>
                     </div>
                 </div>
+                <div class="content">
+                    <div>{{event.EventName}}</div>
+                    <div>{{event.EventDate}}</div>
+                    <div>{{event.StartTime}} - {{event.EndTime}}</div>
+                </div>
             </div>
-        </div>
-        <div class="column">
-            <b-field grouped>
-                <b-field label="Event Name">
-                    <b-input type="text" v-model="EventName"></b-input>
-                </b-field>
-            </b-field>
-            <b-field grouped group-multiline>
-                <b-field label="Please pick a venue">
-                    <b-select v-model="Venue">
-                        <option value="AAB306">AAB306</option>
-                        <option value="Courtyard">Courtyard</option>
-                        <option value="AC Hall">AC Hall</option>
-                    </b-select>
-                </b-field>
-                <b-field label="Please pick an organizer">
-                    <b-select v-model="Organizer">
-                        <option value="Music Society">Music Society</option>
-                        <option value="Department of Computer Science">Department of Computer Science</option>
-                        <option value="Student Union">Student Union</option>
-                    </b-select>
-                </b-field>
-            </b-field>
-            <b-field grouped group-multiline>
-                <b-field label="Start Date">
-                    <b-input type="date" v-model="StartDate"></b-input>
-                </b-field>
-                <b-field label="End Date">
-                    <b-input type="date" v-model="EndDate"></b-input>
-                </b-field>
-            </b-field>
-            <div class="field is-grouped" style="margin-top: 2%;">
-                <p class="control">
-                    <button class="button is-link" id="submitButton"
-                        @click="fetchData('EventName='+EventName+'&Organizer='+Organizer+'&Venue='+Venue+'&StartDate='+StartDate+'&EndDate='+EndDate)"
-                        style="background-color:#1764bd;">
-                        Submit </button>
-                </p>
-            </div>
-            <hr>
-            <b-pagination :total="total" v-model="current" :range-before="rangeBefore" :range-after="rangeAfter"
-                :order="order" :size="size" :simple="isSimple" :rounded="isRounded" :per-page="perPage"
-                :icon-prev="prevIcon" :icon-next="nextIcon" aria-next-label="Next page"
-                aria-previous-label="Previous page" aria-page-label="Page" aria-current-label="Current page"
-                @change="fetchData('EventName='+EventName+'&Organizer='+Organizer+'&Venue='+Venue+'&StartDate='+StartDate+'&EndDate='+EndDate)">
-            </b-pagination>
         </div>
     </div>
+    <div class="column">
+        <b-field grouped>
+            <b-field label="Event Name">
+                <b-input type="text" v-model="EventName"></b-input>
+            </b-field>
+        </b-field>
+        <b-field grouped group-multiline>
+            <b-field label="Please pick a venue">
+                <b-select v-model="Venue">
+                    <option value="AAB306">AAB306</option>
+                    <option value="Courtyard">Courtyard</option>
+                    <option value="AC Hall">AC Hall</option>
+                </b-select>
+            </b-field>
+            <b-field label="Please pick an organizer">
+                <b-select v-model="Organizer">
+                    <option value="Music Society">Music Society</option>
+                    <option value="Department of Computer Science">Department of Computer Science</option>
+                    <option value="Student Union">Student Union</option>
+                </b-select>
+            </b-field>
+        </b-field>
+        <b-field grouped group-multiline>
+            <b-field label="Start Date">
+                <b-input type="date" v-model="StartDate"></b-input>
+            </b-field>
+            <b-field label="End Date">
+                <b-input type="date" v-model="EndDate"></b-input>
+            </b-field>
+        </b-field>
+        <div class="field is-grouped" style="margin-top: 2%;">
+            <p class="control">
+                <button class="button is-link" id="submitButton"
+                    @click="fetchData('EventName='+EventName+'&Organizer='+Organizer+'&Venue='+Venue+'&StartDate='+StartDate+'&EndDate='+EndDate)"
+                    style="background-color:#1764bd;">
+                    Submit </button>
+            </p>
+        </div>
+        <hr>
+        <b-pagination :total="total" v-model="current" :range-before="rangeBefore" :range-after="rangeAfter"
+            :order="order" :size="size" :simple="isSimple" :rounded="isRounded" :per-page="perPage"
+            :icon-prev="prevIcon" :icon-next="nextIcon" aria-next-label="Next page" aria-previous-label="Previous page"
+            aria-page-label="Page" aria-current-label="Current page"
+            @change="fetchData('EventName='+EventName+'&Organizer='+Organizer+'&Venue='+Venue+'&StartDate='+StartDate+'&EndDate='+EndDate)">
+        </b-pagination>
+    </div>
+
 </div>
 <script>
     new Vue({
@@ -114,10 +113,6 @@
         },
         mounted: function () {
             this.fetchData(this.where);
-        },
-        computed: {
-            isFirstPage: function () { return this.current <= 1 },
-            isLastPage: function () { return this.current >= Math.ceil(this.total / this.perPage) },
         },
     })
 </script>
